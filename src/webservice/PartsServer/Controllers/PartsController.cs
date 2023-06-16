@@ -79,6 +79,7 @@ namespace PartsService.Controllers
                 if (existingParts != null)
                 {
                     existingParts.Suppliers = part.Suppliers;
+                    existingParts.Price = part.Price;
                     existingParts.PartType = part.PartType;
                     existingParts.PartAvailableDate = part.PartAvailableDate;
                     existingParts.PartName = part.PartName;
