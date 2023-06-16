@@ -38,6 +38,20 @@ namespace PartsClient.Data
             }
         }
 
+        double _price;
+        public double Price
+        {
+            get => _price;
+            set
+            {
+                if (_price == value)
+                    return;
+
+                _price = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Price)));
+            }
+        }
+
         string _theSuppliers;
         public string TheSuppliers
         {

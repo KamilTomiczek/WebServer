@@ -18,12 +18,12 @@ namespace PartsService.Controllers
             {
                 return Unauthorized();
             }
-            Console.WriteLine("GET /api/parts");
-            return new JsonResult(UserParts);
+            Console.WriteLine("GET /api/cars");
+            return new JsonResult(UserCars);
         }
 
-        [HttpGet("{partid}")]
-        public ActionResult Get(string partid)
+        [HttpGet("{carid}")]
+        public ActionResult Get(string carid)
         {
             var authorized = CheckAuthorization();
             if (!authorized)
@@ -31,26 +31,26 @@ namespace PartsService.Controllers
                 return Unauthorized();
             }
 
-            if (string.IsNullOrEmpty(partid))
+            if (string.IsNullOrEmpty(carid))
                 return this.BadRequest();
 
-            partid = partid.ToUpperInvariant();
-            Console.WriteLine($"GET /api/parts/{partid}");
-            var userParts = UserParts;
-            var part = userParts.SingleOrDefault(x => x.PartID == partid);
+            carid = carid.ToUpperInvariant();
+            Console.WriteLine($"GET /api/cars/{carid}");
+            var userCars = UserCars;
+            var car = userCars.SingleOrDefault(x => x.CarID == carid);
 
-            if (part == null)
+            if (car == null)
             {
                 return this.NotFound();
             }
             else
             {
-                return this.Ok(part);
+                return this.Ok(car);
             }
         }
 
-        [HttpPut("{partid}")]
-        public HttpResponseMessage Put(string partid, [FromBody] Part part)
+        [HttpPut("{carid}")]
+        public HttpResponseMessage Put(string carid, [FromBody] Car car)
         {
             try
             {
@@ -65,24 +65,23 @@ namespace PartsService.Controllers
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
-                if (string.IsNullOrEmpty(part.PartID))
+                if (string.IsNullOrEmpty(car.CarID))
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
-                Console.WriteLine($"PUT /api/parts/{partid}");
-                Console.WriteLine(JsonSerializer.Serialize(part));
+                Console.WriteLine($"PUT /api/cars/{carid}");
+                Console.WriteLine(JsonSerializer.Serialize(car));
 
 
-                var userParts = UserParts;
-                var existingParts = userParts.SingleOrDefault(x => x.PartID == partid);
+                var userCars = UserCars;
+                var existingParts = userCars.SingleOrDefault(x => x.CarID == carid);
                 if (existingParts != null)
                 {
-                    existingParts.Suppliers = part.Suppliers;
-                    existingParts.Price = part.Price;
-                    existingParts.PartType = part.PartType;
-                    existingParts.PartAvailableDate = part.PartAvailableDate;
-                    existingParts.PartName = part.PartName;
+                    existingParts.Marka = car.Marka;
+                    existingParts.Model = car.Model;
+                    existingParts.Cena = car.Cena;
+                    existingParts.Rocznik = car.Rocznik;
                 }
 
                 return new HttpResponseMessage(HttpStatusCode.OK);
@@ -94,7 +93,7 @@ namespace PartsService.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Part part)
+        public ActionResult Post([FromBody] Car car)
         {
             try
             {
@@ -104,30 +103,30 @@ namespace PartsService.Controllers
                     return this.Unauthorized();
                 }
 
-                if (!string.IsNullOrWhiteSpace(part.PartID))
+                if (!string.IsNullOrWhiteSpace(car.CarID))
                 {
                     return this.BadRequest();
                 }
-                Console.WriteLine($"POST /api/parts");
-                Console.WriteLine(JsonSerializer.Serialize(part));
+                Console.WriteLine($"POST /api/cars");
+                Console.WriteLine(JsonSerializer.Serialize(car));
 
-                part.PartID = PartsFactory.CreatePartID();
+                car.CarID = PartsFactory.CreateCarID();
 
                 if (!ModelState.IsValid)
                 {
                     return this.BadRequest();
                 }
 
-                var userParts = UserParts;
+                var userCars = UserCars;
 
-                if (userParts.Any(x => x.PartID == part.PartID))
+                if (userCars.Any(x => x.CarID == car.CarID))
                 {
                     return this.Conflict();
                 }
 
-                userParts.Add(part);
+                userCars.Add(car);
 
-                return this.Ok(part);
+                return this.Ok(car);
             }
             catch (Exception ex)
             {
@@ -136,8 +135,8 @@ namespace PartsService.Controllers
         }
 
         [HttpDelete]
-        [Route("{partid}")]
-        public HttpResponseMessage Delete(string partid)
+        [Route("{carid}")]
+        public HttpResponseMessage Delete(string carid)
         {
             try
             {
@@ -147,15 +146,15 @@ namespace PartsService.Controllers
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
 
-                var userParts = UserParts;
-                var existingParts = userParts.SingleOrDefault(x => x.PartID == partid);
+                var userCars = UserCars;
+                var existingParts = userCars.SingleOrDefault(x => x.CarID == carid);
 
                 if (existingParts == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-                Console.WriteLine($"POST /api/parts/{partid}");
-                userParts.RemoveAll(x => x.PartID == partid);
+                Console.WriteLine($"POST /api/cars/{carid}");
+                userCars.RemoveAll(x => x.CarID == carid);
 
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }

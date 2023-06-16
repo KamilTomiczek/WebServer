@@ -20,6 +20,7 @@
                         <VerticalStackLayout Padding="15,10" Margin="10,5,10,5">
                             <Label Text="{Binding PartID, StringFormat='ID: {0}'}" FontSize="Title" Margin="0,0,0,20"/>
                             <Label Text="{Binding PartName, StringFormat='Part Name: {0}'}"/>
+                            <Label Text="{Binding Price, StringFormat='Price: {0}zł'}"/>
                             <Label Text="{Binding PartType, StringFormat='Part Type: {0}'}"/>
                         </VerticalStackLayout>
                     </DataTemplate>

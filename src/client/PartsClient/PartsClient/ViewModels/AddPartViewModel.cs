@@ -3,6 +3,7 @@ using PartsClient.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,20 @@ namespace PartsClient.ViewModels
             }
         }
 
+        double _price;
+        public double Price
+        {
+            get => _price;
+            set
+            {
+                if (_price == value)
+                    return;
+
+                _price = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Price)));
+            }
+        }
+
         string _partType;
         public string PartType
         {
@@ -95,7 +110,7 @@ namespace PartsClient.ViewModels
 
         private async Task InsertPart()
         {
-            await PartsManager.Add(PartName, Suppliers, PartType);
+            await PartsManager.Add(PartName, Suppliers, Price, PartType);
 
             MessagingCenter.Send(this, "refresh");
 
@@ -108,6 +123,7 @@ namespace PartsClient.ViewModels
             {
                 PartID = PartID,
                 PartName = PartName,
+                Price = Price,
                 PartType = PartType,
                 Suppliers = Suppliers.Split(",").ToList()
             };

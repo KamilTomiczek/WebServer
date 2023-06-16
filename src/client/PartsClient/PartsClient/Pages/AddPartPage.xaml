@@ -12,6 +12,7 @@
                     <EntryCell Label="Part Name" Text="{Binding PartName}" />
                     <EntryCell Label="Part Type" Text="{Binding PartType}" />
                     <EntryCell Label="Supplier" Text="{Binding Suppliers}" />
+                    <EntryCell Label="Price" Text="{Binding Price}" />
                 </TableSection>
             </TableRoot>
         </TableView>

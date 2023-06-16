@@ -9,7 +9,7 @@ namespace PartsService.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        protected List<Part> UserParts
+        protected List<Car> UserCars
         {
             get
             {
@@ -18,12 +18,12 @@ namespace PartsService.Controllers
                     return null;
                 }
 
-                if (!PartsFactory.Parts.ContainsKey(this.AuthorizationToken))
+                if (!PartsFactory.Cars.ContainsKey(this.AuthorizationToken))
                 {
                     return null;
                 }
 
-                var result = PartsFactory.Parts[this.AuthorizationToken];
+                var result = PartsFactory.Cars[this.AuthorizationToken];
 
                 return result.Item2;
             }
@@ -49,7 +49,7 @@ namespace PartsService.Controllers
                     return false;
                 }
 
-                if (!PartsFactory.Parts.ContainsKey(this.AuthorizationToken))
+                if (!PartsFactory.Cars.ContainsKey(this.AuthorizationToken))
                 {
                     return false;
                 }
